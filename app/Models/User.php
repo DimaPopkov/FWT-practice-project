@@ -20,7 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'fio',
-        'group',
+        'group_id',
         'birthday',
         'password',
     ];
@@ -45,5 +45,15 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function groups()
+    {
+        return $this->belongsTo(Groups::class);
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grades::class);
     }
 }

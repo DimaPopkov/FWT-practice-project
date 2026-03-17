@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 'fio',
-        // 'group',
-        // 'birthday',
-        // 'password',
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('fio');
-            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade');
-            $table->date('birthday');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

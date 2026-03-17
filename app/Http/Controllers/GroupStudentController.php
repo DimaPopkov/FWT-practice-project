@@ -42,32 +42,34 @@ class GroupStudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $group)
+    public function show(User $student)
     {
-        //
+        return view('students.show', compact('student'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group)
+    public function edit(User $student)
     {
-        //
+        return view('students.edit', compact('student'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGroupStudentRequest $request, Group $group)
+    public function update(UpdateGroupStudentRequest $request, User $student)
     {
-        //
+        $student->update($request->validated());
+        return redirect()->route('students.show', $student);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy(User $student)
     {
-        //
+        $student->delete();
+        return back();
     }
 }

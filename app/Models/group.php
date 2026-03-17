@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class subjects extends Model
+class group extends Model
 {
     //
     protected $fillable = [
         'name'
     ];
 
-    public function grades()
+    public function user()
     {
-        return $this->belongsTo(Grades::class);
+        return $this->hasMany(User::class); 
     }
 }

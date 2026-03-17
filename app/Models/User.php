@@ -47,13 +47,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function groups()
+    public function group()
     {
-        return $this->belongsTo(Groups::class);
+        return $this->belongsTo(Group::class);
     }
 
-    public function grades()
+    public function grade()
     {
-        return $this->hasMany(Grades::class);
+        return $this->hasMany(Grade::class);
     }
 }

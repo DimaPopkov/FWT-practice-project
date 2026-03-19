@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class grade extends Model
+class Grade extends Model
 {
     //
     protected $fillable = [
@@ -13,7 +13,7 @@ class grade extends Model
         'grade',
     ];
 
-    public function groups()
+    public function subject()
     {
         return $this->belongsTo(Subject::class);
     }

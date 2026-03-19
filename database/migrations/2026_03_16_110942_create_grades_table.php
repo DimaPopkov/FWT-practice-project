@@ -16,8 +16,8 @@ return new class extends Migration
         // 'grade',
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('User')->onDelete('cascade');
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained('subject')->onDelete('cascade');
             $table->tinyInteger('grade');
             $table->timestamps();
         });

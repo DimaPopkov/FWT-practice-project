@@ -27,6 +27,14 @@ Route::get('students/{student}/edit', [GroupStudentController::class, 'edit'])->
 Route::put('students/{student}', [GroupStudentController::class, 'update'])->name('students.update');
 Route::delete('students/{student}', [GroupStudentController::class, 'destroy'])->name('students.destroy');
 
+Route::get('grades/', [GradeController::class, 'index'])->name('grades.index');
+Route::get('students/{student}/grades/create', [GradeController::class, 'create'])->name('grades.create');
+Route::post('students/{student}/grades', [GradeController::class, 'store'])->name('grades.store');
+Route::get('grades/{grade}/edit', [GradeController::class, 'edit'])->name('grades.edit');
+Route::put('grades/{grade}', [GradeController::class, 'update'])->name('grades.update');
+Route::delete('grades/{grade}', [GradeController::class, 'destroy'])->name('grades.destroy');
+
+
 Route::resource('subject', SubjectController::class)->names([
     'index' => 'subject.index',
     'create' => 'subject.create',

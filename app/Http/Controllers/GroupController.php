@@ -17,7 +17,7 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::orderBy('name', 'asc')->paginate(10);
-        return view('group.index', compact('group'));
+        return view('groups.index', compact('group'));
     }
 
     /**
@@ -26,7 +26,7 @@ class GroupController extends Controller
     public function create()
     {
         $group = new Group();
-        return view('group.create', compact('group'));
+        return view('groups.create', compact('group'));
     }
 
     /**
@@ -35,7 +35,7 @@ class GroupController extends Controller
     public function store(StoreGroupRequest $request)
     {
         Group::create($request->validated());
-        return redirect()->route('group.index')->with('success', 'Группа успешно добавлена.');
+        return redirect()->route('groups.index')->with('success', 'Группа успешно добавлена.');
     }
 
     /**
@@ -43,7 +43,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        return view('group.show', compact('group'));
+        return view('groups.show', compact('group'));
     }
 
     /**
@@ -51,7 +51,7 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        return view('group.edit', compact('group'));
+        return view('groups.edit', compact('group'));
     }
 
     /**
@@ -60,7 +60,7 @@ class GroupController extends Controller
     public function update(UpdateGroupRequest $request, Group $group)
     {
         $group->update($request->validated());
-        return redirect()->route('group.index')->with('success', 'Группа успешно обновлена.');
+        return redirect()->route('groups.index')->with('success', 'Группа успешно обновлена.');
     }
 
     /**
@@ -69,6 +69,6 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         $group->delete();
-        return redirect()->route('group.index')->with('success', 'Группа удалена.');
+        return redirect()->route('groups.index')->with('success', 'Группа удалена.');
     }
 }

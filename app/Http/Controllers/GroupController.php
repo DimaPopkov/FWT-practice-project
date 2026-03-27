@@ -14,10 +14,13 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $groups = Group::orderBy('name', 'asc')->paginate(10);
-        return view('groups.index', compact('group'));
+        $groups = Group::search($request->name)
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('groups.index', compact('groups'));
     }
 
     /**

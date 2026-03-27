@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Grade;
 use App\Models\User;
+use App\Models\Subject;
+
+use App\Services\JournalService;
 
 use App\Http\Requests\GradeRequest;
 
@@ -14,11 +17,12 @@ class GradeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(JournalService $service)
     {
         $grades = Grade::with(['user', 'subject'])->paginate(10);
+        $subjects = Subject::all();
 
-        return view('grades.index', compact('grades'));
+        return view('grades.index', compact('grades', 'subjects'), $service->getJournalData());
     }
 
     /**

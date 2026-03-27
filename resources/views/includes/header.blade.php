@@ -6,7 +6,7 @@
         <span class="col-auto"> <a class="font24" href="./grades"> Оценки </a> </span>
         <span class="col-auto"> <a class="font24" href="./subjects"> Предметы </a> </span>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
         <a class="font24" href="./login"> Войти </a>
     </div>
 </header>

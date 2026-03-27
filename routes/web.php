@@ -1,27 +1,26 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupStudentController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\SubjectController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 
-Route::resource('group', GroupController::class)->names([
-    'index' => 'group.index',
-    'create' => 'group.create',
-    'store' => 'group.store',
-    'show' => 'group.show',
-    'edit' => 'group.edit',
-    'update' => 'group.update',
-    'destroy' => 'group.destroy',
-]) -> middleware('auth');
+Route::resource('groups', GroupController::class);
+// -> middleware('auth');
 
-Route::get('group/{group}/students', [GroupStudentController::class, 'index'])->name('group.students.index');
-Route::get('group/{group}/students/create', [GroupStudentController::class, 'create'])->name('group.students.create');
-Route::post('group/{group}/students', [GroupStudentController::class, 'store'])->name('group.students.store');
+Route::get('groups/{group}/students', [GroupStudentController::class, 'index'])->name('groups.students.index');
+Route::get('groups/{group}/students/create', [GroupStudentController::class, 'create'])->name('groups.students.create');
+Route::post('groups/{group}/students', [GroupStudentController::class, 'store'])->name('groups.students.store');
 
+Route::get('students/', [GroupStudentController::class, 'index'])->name('students.index');
 Route::get('students/{student}', [GroupStudentController::class, 'show'])->name('students.show');
 Route::get('students/{student}/edit', [GroupStudentController::class, 'edit'])->name('students.edit');
 Route::put('students/{student}', [GroupStudentController::class, 'update'])->name('students.update');
@@ -34,13 +33,7 @@ Route::get('grades/{grade}/edit', [GradeController::class, 'edit'])->name('grade
 Route::put('grades/{grade}', [GradeController::class, 'update'])->name('grades.update');
 Route::delete('grades/{grade}', [GradeController::class, 'destroy'])->name('grades.destroy');
 
+Route::get('/journal', [JournalController::class, 'index']);
 
-Route::resource('subject', SubjectController::class)->names([
-    'index' => 'subject.index',
-    'create' => 'subject.create',
-    'store' => 'subject.store',
-    'show' => 'subject.show',
-    'edit' => 'subject.edit',
-    'update' => 'subject.update',
-    'destroy' => 'subject.destroy',
-]) -> middleware('auth');
+Route::resource('subjects', SubjectController::class);
+// -> middleware('auth');

@@ -10,10 +10,13 @@ class SubjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = Subject::orderBy('name', 'asc')->paginate(10);
-        return view('subject.index', compact('subject'));
+        $subjects = Subject::search($request->name)
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('subjects.index', compact('subjects'));
     }
 
     /**
@@ -22,7 +25,7 @@ class SubjectController extends Controller
     public function create()
     {
         $subject = new Subject();
-        return view('subject.create', compact('subject'));
+        return view('subjects.create', compact('subject'));
     }
 
     /**
@@ -31,7 +34,7 @@ class SubjectController extends Controller
     public function store(StoreSubjectRequest $request)
     {
         Subject::create($request->validated());
-        return redirect()->route('subject.index')->with('success', 'Предмет успешно добавлен.');
+        return redirect()->route('subjects.index')->with('success', 'Предмет успешно добавлен.');
     }
 
     /**
@@ -39,7 +42,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        return view('subject.show', compact('subject'));
+        return view('subjects.show', compact('subject'));
     }
 
     /**
@@ -47,7 +50,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return view('subject.edit', compact('subject'));
+        return view('subjects.edit', compact('subject'));
     }
 
     /**
@@ -56,7 +59,7 @@ class SubjectController extends Controller
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
         $subject->update($request->validated());
-        return redirect()->route('subject.index')->with('success', 'Предмет успешно обновлен.');
+        return redirect()->route('subjects.index')->with('success', 'Предмет успешно обновлен.');
     }
 
     /**
@@ -65,6 +68,6 @@ class SubjectController extends Controller
     public function destroy(Subject $subject)
     {
         $subject->delete();
-        return redirect()->route('subject.index')->with('success', 'Предмет удален.');
+        return redirect()->route('subjects.index')->with('success', 'Предмет удален.');
     }
 }

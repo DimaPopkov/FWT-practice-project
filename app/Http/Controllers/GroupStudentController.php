@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreGroupStudentRequest;
@@ -13,10 +14,13 @@ class GroupStudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Group $group)
+    public function index(Group $group, Request $request)
     {
-        $students = $group->users()->with('group')->paginate(10); 
-        return view('students.index', compact('group', 'students'));
+        $students = User::filter($request->only(['fio', 'birthday']))->with('group')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('students.index', compact('students'));
     }
 
     /**
@@ -36,7 +40,7 @@ class GroupStudentController extends Controller
 
         $group->users()->create($data); 
 
-        return redirect()->route('group.students.index', $group);
+        return redirect()->route('groups.students.index', $group);
     }
 
     /**

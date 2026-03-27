@@ -24,8 +24,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'fio',
+        'name',
         'group_id',
+        'email',
         'birthday',
         'password',
     ];
@@ -48,6 +49,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'birthday' => 'date',
             'address' => 'array',
@@ -102,15 +104,15 @@ class User extends Authenticatable
             return 'table-warning';
         }
 
-        return 'table-danger';
+        return 'table-danger'; // striped
     }
 
     public function scopeFilter($query, array $filters)
     {
         return $query
             // Фильтр по ФИО
-            ->when($filters['fio'] ?? null, function ($q, $fio) {
-                $q->where('fio', 'like', "%{$fio}%");
+            ->when($filters['name'] ?? null, function ($q, $name) {
+                $q->where('name', 'like', "%{$name}%");
             })
             // Фильтр по дате рождения
             ->when($filters['birthday'] ?? null, function ($q, $date) {

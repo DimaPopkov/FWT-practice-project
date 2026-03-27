@@ -16,7 +16,7 @@ class GroupStudentController extends Controller
      */
     public function index(Group $group, Request $request)
     {
-        $students = User::filter($request->only(['fio', 'birthday']))->with('group')
+        $students = User::filter($request->only(['name', 'birthday']))->with('group')
             ->paginate(10)
             ->withQueryString();
 

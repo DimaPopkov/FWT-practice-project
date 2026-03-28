@@ -14,7 +14,7 @@ class Grade extends Model
     //
     protected $fillable = [
         'user',
-        'subject',
+        'subject_id',
         'grade',
     ];
 

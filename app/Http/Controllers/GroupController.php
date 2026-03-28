@@ -9,13 +9,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class GroupController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, Group $group)
     {
+        $this->authorize('viewAny', $group);
         $groups = Group::search($request->name)
             ->paginate(10)
             ->withQueryString();
@@ -28,6 +32,7 @@ class GroupController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', $user);
         $group = new Group();
         return view('groups.create', compact('group'));
     }
@@ -37,6 +42,7 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
+        $this->authorize('store', $user);
         Group::create($request->validated());
         return redirect()->route('groups.index')->with('success', 'Группа успешно добавлена.');
     }
@@ -46,6 +52,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
+        $this->authorize('show', $user);
         return view('groups.show', compact('group'));
     }
 
@@ -54,6 +61,7 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
+        $this->authorize('edit', $user);   
         return view('groups.edit', compact('group'));
     }
 
@@ -62,6 +70,7 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
+        $this->authorize('update', $user);
         $group->update($request->validated());
         return redirect()->route('groups.index')->with('success', 'Группа успешно обновлена.');
     }
@@ -71,6 +80,7 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
+        $this->authorize('destroy', $user);
         $group->delete();
         return redirect()->route('groups.index')->with('success', 'Группа удалена.');
     }

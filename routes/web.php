@@ -10,9 +10,11 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::redirect('/', '/register');
 
 Route::resource('groups', GroupController::class);// -> middleware('auth');
 

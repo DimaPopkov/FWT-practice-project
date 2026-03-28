@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'fio' => $this->faker->name(),
             'group_id' => Group::inRandomOrder()->first()->id ?? Group::factory(),
             'birthday' => $this->faker->date(),
+            'role' => fake()->randomElement([User::ROLE_ADMIN, User::ROLE_TEACHER, User::ROLE_STUDENT]),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

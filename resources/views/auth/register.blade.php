@@ -20,15 +20,29 @@
         <div class="mt-4">
             <x-input-label for="group" :value="__('Group')" />
 
-        <x-select 
-            name="group_id" 
-            label="Группа" 
-            :options="$groups" 
-            :selected="old('group_id')"
-            class="custom-select-class block mt-1 w-full" 
-        />
-
+            <x-select 
+                name="group_id" 
+                label="Группа" 
+                :options="$groups" 
+                :selected="old('group_id')"
+                class="custom-select-class block mt-1 w-full" 
+            />
+            
             <x-input-error :messages="$errors->get('group')" class="mt-2" />
+        </div>
+
+        <!-- Role -->
+        <div class="mt-4">
+            <x-input-label for="role" :value="__('Role')" />
+
+            <x-select 
+                name="role" 
+                label="Роль пользователя" 
+                :options="\App\Models\User::getRoles()" 
+                :selected="old('role', \App\Models\User::ROLE_STUDENT)"
+            />
+
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
         
 

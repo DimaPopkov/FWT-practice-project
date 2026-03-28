@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="container">
                 <div>
-                    <a class="btn btn-success btn_align"> Добавить </a>
+                    <a class="btn btn-success btn_align mb-3"> Добавить </a>
                     
                     @if($grades->isNotEmpty())
                         <div class="table-responsive">

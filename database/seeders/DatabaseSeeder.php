@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
         User::factory()->count(3)->create();
         Subject::factory()->count(2)->create();
         Grade::factory()->count(6)->create();
-
-        // User::factory(10)->create();
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'role' => User::ROLE_ADMIN,
+        ]);
     }
 }

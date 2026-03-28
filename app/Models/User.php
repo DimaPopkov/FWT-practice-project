@@ -17,6 +17,11 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    const ROLE_ADMIN = 1;
+    const ROLE_TEACHER = 2;
+    const ROLE_STUDENT = 3;
+
     protected $table = 'users';
     /**
      * The attributes that are mass assignable.
@@ -54,6 +59,30 @@ class User extends Authenticatable
             'birthday' => 'date',
             'address' => 'array',
         ];
+    }
+
+    public static function getRoles()
+    {
+        return [
+            self::ROLE_ADMIN => 'Администратор',
+            self::ROLE_TEACHER => 'Учитель',
+            self::ROLE_STUDENT => 'Студент',
+        ];
+    }
+
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function getIsTeacherAttribute(): bool
+    {
+        return $this->role === self::ROLE_TEACHER;
+    }
+
+    public function getIsStudentAttribute(): bool
+    {
+        return $this->role === self::ROLE_STUDENT;
     }
 
     protected function formattedBirthday(): Attribute

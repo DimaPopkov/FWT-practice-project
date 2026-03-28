@@ -16,6 +16,8 @@ use Illuminate\View\View;
 use App\Mail\UserPasswordMail;
 use Illuminate\Support\Facades\Mail;
 
+use App\Events\UserCreated;
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -52,7 +54,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        Mail::to($user->email)->send(new UserPasswordMail($user, $request->password));
+        event(new UserCreated($user, $request->password));
 
         return redirect(route('dashboard', absolute: false));
     }

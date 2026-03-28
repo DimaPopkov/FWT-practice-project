@@ -16,6 +16,22 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Group -->
+        <div class="mt-4">
+            <x-input-label for="group" :value="__('Group')" />
+
+        <x-select 
+            name="group_id" 
+            label="Группа" 
+            :options="$groups" 
+            :selected="old('group_id')"
+            class="custom-select-class block mt-1 w-full" 
+        />
+
+            <x-input-error :messages="$errors->get('group')" class="mt-2" />
+        </div>
+        
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />

@@ -10,14 +10,17 @@ use App\Models\Group;
 use App\Services\JournalService;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class JournalController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index(JournalService $service)
+    public function index(JournalService $service, User $user)
     {
+        $this->authorize('viewAny', $user);
         return view('journal.index', $service->getJournalData());
     }
 

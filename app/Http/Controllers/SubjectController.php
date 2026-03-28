@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class SubjectController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, Subject $subject)
     {
+        $this->authorize('viewAny', $subject);
         $subjects = Subject::search($request->name)
             ->paginate(10)
             ->withQueryString();
@@ -22,8 +27,9 @@ class SubjectController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Subject $subject)
     {
+        $this->authorize('create', $subject);
         $subject = new Subject();
         return view('subjects.create', compact('subject'));
     }
@@ -31,8 +37,9 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubjectRequest $request)
+    public function store(StoreSubjectRequest $request, Subject $subject)
     {
+        $this->authorize('store', $subject);
         Subject::create($request->validated());
         return redirect()->route('subjects.index')->with('success', 'Предмет успешно добавлен.');
     }
@@ -42,6 +49,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
+        $this->authorize('show', $subject);
         return view('subjects.show', compact('subject'));
     }
 
@@ -50,6 +58,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
+        $this->authorize('edit', $subject);
         return view('subjects.edit', compact('subject'));
     }
 
@@ -58,6 +67,7 @@ class SubjectController extends Controller
      */
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
+        $this->authorize('update', $subject);
         $subject->update($request->validated());
         return redirect()->route('subjects.index')->with('success', 'Предмет успешно обновлен.');
     }
@@ -67,6 +77,7 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
+        $this->authorize('destroy', $subject);
         $subject->delete();
         return redirect()->route('subjects.index')->with('success', 'Предмет удален.');
     }

@@ -22,7 +22,7 @@
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary">Найти</button>
                             <a href="{{ route('students.index') }}" class="btn btn-secondary">Сбросить</a>
-                            <a class="btn btn-success"> Добавить </a>
+                            @can('create', App\Models\User::class) <a class="btn btn-success"> Добавить </a> @endcan
                         </div>
                     </form>
 
@@ -54,16 +54,23 @@
                                                 Нет данных
                                             </td>
                                         @endif
+                                        
                                         <td>
-                                            <a href="" class="btn btn-primary">
-                                                Подробнее
-                                            </a>
-                                            <a href="" class="btn btn-warning">
-                                                Изменить
-                                            </a>
-                                            <a href="" class="btn btn-danger">
-                                                Удалить
-                                            </a>
+                                            @can('view', $student)
+                                                <a href="" class="btn btn-primary">
+                                                    Подробнее
+                                                </a>
+                                            @endcan
+                                            @can('update', $student)
+                                                <a href="" class="btn btn-warning">
+                                                    Изменить
+                                                </a>
+                                            @endcan
+                                            @can('delete', $student)
+                                                <a href="" class="btn btn-danger">
+                                                    Удалить
+                                                </a>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

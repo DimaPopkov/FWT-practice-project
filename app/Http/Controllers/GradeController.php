@@ -11,14 +11,17 @@ use App\Services\JournalService;
 use App\Http\Requests\GradeRequest;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class GradeController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index(JournalService $service)
-    {
+    public function index(JournalService $service, User $student)
+    { 
+        $this->authorize('viewAny', $student);
         $grades = Grade::with(['user', 'subject'])->paginate(10);
         $subjects = Subject::all();
 
@@ -30,6 +33,7 @@ class GradeController extends Controller
      */
     public function create(User $student)
     {
+        $this->authorize('create', $student);
         $subjects = Subject::all(); 
         return view('grades.create', compact('student', 'subjects'));
     }
@@ -39,6 +43,7 @@ class GradeController extends Controller
      */
     public function store(GradeRequest $request, User $student)
     {
+        $this->authorize('store', $student);
         $student->grades()->create($request->validated());
 
         return redirect()->route('students.show', $student);
@@ -49,6 +54,7 @@ class GradeController extends Controller
      */
     public function show(User $student)
     {
+        $this->authorize('show', $student);
         $student->load('grades.subject'); 
     
         return view('students.show', compact('student'));
@@ -57,16 +63,18 @@ class GradeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Grade $grade)
+    public function edit(Grade $grade, User $student)
     {
+        $this->authorize('edit', $student);
         return view('grades.edit', compact('grade'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(GradeRequest $request, Grade $grade)
+    public function update(GradeRequest $request, Grade $grade, User $student)
     {
+        $this->authorize('update', $student);
         $grade->update($request->validated());
         return redirect()->route('students.show', $grade->user_id);
     }
@@ -74,8 +82,9 @@ class GradeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, User $student)
     {
+        $this->authorize('destroy', $student);
         $studentId = $grade->user_id;
 
         $grade->delete();

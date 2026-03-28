@@ -19,7 +19,7 @@
                             @if(request('name'))
                                 <a href="{{ route('subjects.index') }}" class="btn btn-outline-secondary">Сбросить</a>
                             @endif 
-                            <a class="btn btn-success"> Добавить </a>
+                            @can('create', App\Models\User::class) <a class="btn btn-success"> Добавить </a> @endcan
                         </div>
                     </form>
 
@@ -41,15 +41,23 @@
                                             </span>
 
                                             <div style="flex: 1;" class="text-end">
-                                                <a href="" class="btn btn-primary">
-                                                    Подробнее
-                                                </a>
-                                                <a href="" class="btn btn-warning">
-                                                    Изменить
-                                                </a>
-                                                <a href="" class="btn btn-danger">
-                                                    Удалить
-                                                </a>
+                                                @can('view', $subject)
+                                                    <a href="" class="btn btn-primary">
+                                                        Подробнее
+                                                    </a>
+                                                @endcan
+
+                                                @can('update', $subject)
+                                                    <a href="" class="btn btn-warning">
+                                                        Изменить
+                                                    </a>
+                                                @endcan
+
+                                                @can('delete', $subject)
+                                                    <a href="" class="btn btn-danger">
+                                                        Удалить
+                                                    </a>
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>

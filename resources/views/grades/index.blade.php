@@ -32,13 +32,16 @@
                                             <td>{{ $grade->user->group->name ?? "Не указана" }}</td>
                                             <td>{{ $grade->subject->name ?? "Не указана" }}</td>
                                             <td>{{ $grade->grade ?? "Не указана" }}</td>
+
                                             <td>
                                                 <a href="" class="btn btn-primary">
                                                     Подробнее
                                                 </a>
+                                        
                                                 <a href="" class="btn btn-warning">
                                                     Изменить
                                                 </a>
+                                                
                                                 <a href="" class="btn btn-danger">
                                                     Удалить
                                                 </a>

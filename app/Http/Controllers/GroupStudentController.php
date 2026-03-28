@@ -9,13 +9,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreGroupStudentRequest;
 use App\Http\Requests\UpdateGroupStudentRequest;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class GroupStudentController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index(Group $group, Request $request)
     {
+        $this->authorize('viewAny', $group);
         $students = User::filter($request->only(['name', 'birthday']))->with('group')
             ->paginate(10)
             ->withQueryString();
@@ -28,6 +32,7 @@ class GroupStudentController extends Controller
      */
     public function create(Group $group)
     {
+        $this->authorize('create', $group);
         return view('students.create', compact('group'));
     }
 
@@ -36,6 +41,7 @@ class GroupStudentController extends Controller
      */
     public function store(StoreGroupStudentRequest $request, Group $group)
     {
+        $this->authorize('store', $group);
         $data = $request->validated();
 
         $group->users()->create($data); 
@@ -48,6 +54,7 @@ class GroupStudentController extends Controller
      */
     public function show(User $student)
     {
+        $this->authorize('show', $student);
         return view('students.show', compact('student'));
     }
 
@@ -56,6 +63,7 @@ class GroupStudentController extends Controller
      */
     public function edit(User $student)
     {
+        $this->authorize('edit', $student);
         return view('students.edit', compact('student'));
     }
 
@@ -64,6 +72,7 @@ class GroupStudentController extends Controller
      */
     public function update(UpdateGroupStudentRequest $request, User $student)
     {
+        $this->authorize('update', $student);
         $student->update($request->validated());
         return redirect()->route('students.show', $student);
     }
@@ -73,6 +82,7 @@ class GroupStudentController extends Controller
      */
     public function destroy(User $student)
     {
+        $this->authorize('destroy', $student);
         $student->delete();
         return back();
     }

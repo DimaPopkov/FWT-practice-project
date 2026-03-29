@@ -32,6 +32,7 @@ class User extends Authenticatable
         'name',
         'group_id',
         'email',
+        'role',
         'birthday',
         'password',
     ];
@@ -68,6 +69,11 @@ class User extends Authenticatable
             self::ROLE_TEACHER => 'Учитель',
             self::ROLE_STUDENT => 'Студент',
         ];
+    }
+
+    public function checkRole(int $roleId): bool
+    {
+        return (int)$this->role === $roleId;
     }
 
     public function getIsAdminAttribute(): bool

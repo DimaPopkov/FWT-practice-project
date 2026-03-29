@@ -22,13 +22,14 @@ class AssignInitialGrades
      */
     public function handle(UserCreated $event): void
     {
-        $subjects = Subject::all();
-
-        foreach ($subjects as $subject) {
-            $event->user->grades()->create([
-                'subject_id' => $subject->id,
-                'grade' => rand(2, 5),
-            ]);
+        if ($event->user->role == 3) {
+            $subjects = Subject::all();
+            foreach ($subjects as $subject) {
+                $event->user->grades()->create([
+                    'subject_id' => $subject->id,
+                    'grade' => rand(2, 5),
+                ]);
+            }
         }
     }
 }

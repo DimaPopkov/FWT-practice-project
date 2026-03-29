@@ -36,10 +36,11 @@
             <x-input-label for="role" :value="__('Role')" />
 
             <x-select 
-                name="role" 
+                name="role_id" 
                 label="Роль пользователя" 
                 :options="\App\Models\User::getRoles()" 
-                :selected="old('role', \App\Models\User::ROLE_STUDENT)"
+                :selected="old('role_id')"
+                class="custom-select-class block mt-1 w-full" 
             />
 
             <x-input-error :messages="$errors->get('role')" class="mt-2" />

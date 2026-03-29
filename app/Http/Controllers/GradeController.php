@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Subject;
 
 use App\Services\JournalService;
-
 use App\Http\Requests\GradeRequest;
 
 use Illuminate\Http\Request;
@@ -72,9 +71,13 @@ class GradeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(GradeRequest $request, Grade $grade, User $student)
+    public function update(GradeRequest $request, Grade $grade, User $user)
     {
-        $this->authorize('update', $student);
+        $student = $grade->user;
+        Gate::authorize('manage-grades', $student);
+
+        $this->authorize('update', $user);
+
         $grade->update($request->validated());
         return redirect()->route('students.show', $grade->user_id);
     }

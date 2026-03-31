@@ -4,10 +4,19 @@ namespace App\Policies;
 
 use App\Models\Group;
 use App\Models\User;
+
 use Illuminate\Auth\Access\Response;
+
+use App\Services\UserService;
 
 class GroupPolicy
 {
+    protected $userService;
+
+    public function __construct(UserService $userService) 
+    {
+        $this->userService = $userService;
+    }
     /**
      * Determine whether the user can view any models.
      */
@@ -21,7 +30,7 @@ class GroupPolicy
      */
     public function view(User $user, Group $group): bool
     {
-        if ($user->is_student) return $user->group_id === $group->id;
+        if ($this->userService->is_student($user)) return $user->group_id === $group->id;
         
         return true;
     }
@@ -31,7 +40,7 @@ class GroupPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_admin;
+        return $this->userService->is_admin($user);
     }
 
     /**
@@ -39,7 +48,7 @@ class GroupPolicy
      */
     public function update(User $user, Group $group): bool
     {
-        return $user->is_admin && $user->group_id === $group->id;
+        return $this->userService->is_admin($user) && $user->group_id === $group->id;
     }
 
     /**

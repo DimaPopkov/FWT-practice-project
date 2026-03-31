@@ -4,10 +4,19 @@ namespace App\Policies;
 
 use App\Models\Subject;
 use App\Models\User;
+
 use Illuminate\Auth\Access\Response;
+
+use App\Services\UserService;
 
 class SubjectPolicy
 {
+    protected $userService;
+
+    public function __construct(UserService $userService) 
+    {
+        $this->userService = $userService;
+    }
     /**
      * Determine whether the user can view any models.
      */
@@ -29,7 +38,7 @@ class SubjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_admin || $user->is_teacher;
+        return $this->userService->is_admin($user) || $this->userService->is_teacher($user);
     }
 
     /**
@@ -37,7 +46,7 @@ class SubjectPolicy
      */
     public function update(User $user, Subject $subject): bool
     {
-        return $user->is_admin || $user->is_teacher;
+        return $this->userService->is_admin($user) || $this->userService->is_teacher($user);
     }
 
     /**
@@ -45,7 +54,7 @@ class SubjectPolicy
      */
     public function delete(User $user, Subject $subject): bool
     {
-        return $user->is_admin;
+        return $this->userService->is_admin($user);
     }
 
     /**

@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Subject;
 
 use App\Services\JournalService;
+use App\Services\UserService;
+
 use App\Http\Requests\GradeRequest;
 
 use Illuminate\Http\Request;
@@ -15,6 +17,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class GradeController extends Controller
 {
     use AuthorizesRequests;
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+    
     /**
      * Display a listing of the resource.
      */

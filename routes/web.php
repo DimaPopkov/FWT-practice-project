@@ -9,6 +9,7 @@ use App\Http\Controllers\JournalController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -39,6 +40,11 @@ Route::get('/journal', [JournalController::class, 'index'])->name('journal.index
 
 Route::resource('subjects', SubjectController::class);// -> middleware('auth');
 
+Route::get('/users/{user}/export-pdf', [UserController::class, 'exportPdf'])
+    ->name('users.export_pdf');
+
+Route::post('/users/{user}/avatar', [UserController::class, 'updateAvatar'])
+    ->name('users.update_avatar');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

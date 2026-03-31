@@ -71,6 +71,11 @@
                                                     Удалить
                                                 </a>
                                             @endcan
+                                            @can('exportPdf', $student)
+                                                <a href="{{ route('users.export_pdf', $student) }}" class="btn btn-danger">
+                                                    Экспорт PDF
+                                                </a>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

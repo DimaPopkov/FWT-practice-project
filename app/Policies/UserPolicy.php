@@ -5,8 +5,16 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
+use App\Services\UserService;
+
 class UserPolicy
 {
+    protected $userService;
+
+    public function __construct(UserService $userService) 
+    {
+        $this->userService = $userService;
+    }
     /**
      * Determine whether the user can view any models.
      */
@@ -28,7 +36,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_admin || $user->is_teacher;
+        return $this->userService->is_admin($user) || $this->userService->is_teacher($user);
     }
 
     /**
@@ -36,15 +44,15 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        if ($user->is_student) return $user->id === $model->id;
+        if ($this->userService->is_student($user)) return $user->id === $model->id;
 
-        if ($user->is_admin) {
+        if ($this->userService->is_admin($user)) {
             return $user->id !== $model->id 
                 && $model->role !== User::ROLE_ADMIN 
                 && $user->group_id === $model->group_id;
         }
         
-        if ($user->is_teacher) {
+        if ($this->userService->is_teacher($user)) {
             return $model->is_student 
                 && $user->group_id === $model->group_id;
         }
@@ -57,7 +65,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->is_admin 
+        return $this->userService->is_admin($user) 
             && $model->role !== User::ROLE_ADMIN 
             && $user->group_id === $model->group_id;
     }

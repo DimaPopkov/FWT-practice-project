@@ -38,7 +38,7 @@
             <x-select 
                 name="role_id" 
                 label="Роль пользователя" 
-                :options="\App\Models\User::getRoles()" 
+                :options="\App\Services\UserService::getRoles()" 
                 :selected="old('role_id')"
                 class="custom-select-class block mt-1 w-full" 
             />

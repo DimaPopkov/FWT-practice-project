@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\User;
+
 use Illuminate\Http\Request;
+
+use App\Services\UserService;
 
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
@@ -14,6 +17,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class GroupController extends Controller
 {
     use AuthorizesRequests;
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     /**
      * Display a listing of the resource.
      */

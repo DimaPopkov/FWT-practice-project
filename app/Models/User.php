@@ -62,35 +62,6 @@ class User extends Authenticatable
         ];
     }
 
-    public static function getRoles()
-    {
-        return [
-            self::ROLE_ADMIN => 'Администратор',
-            self::ROLE_TEACHER => 'Учитель',
-            self::ROLE_STUDENT => 'Студент',
-        ];
-    }
-
-    public function checkRole(int $roleId): bool
-    {
-        return (int)$this->role === $roleId;
-    }
-
-    public function getIsAdminAttribute(): bool
-    {
-        return $this->role === self::ROLE_ADMIN;
-    }
-
-    public function getIsTeacherAttribute(): bool
-    {
-        return $this->role === self::ROLE_TEACHER;
-    }
-
-    public function getIsStudentAttribute(): bool
-    {
-        return $this->role === self::ROLE_STUDENT;
-    }
-
     protected function formattedBirthday(): Attribute
     {
         return Attribute::get(fn () => 
@@ -114,32 +85,6 @@ class User extends Authenticatable
 
             return "г. {$this->address['city']}, ул. {$this->address['street']}, д. {$this->address['house']}";
         });
-    }
-
-    public function isExcellentStudent(): bool
-    {
-        return $this->grades->isNotEmpty() 
-            && $this->grades->every('grade', 5);
-    }
-
-    public function isGoodStudent(): bool
-    {
-        return $this->grades->isNotEmpty() 
-            && $this->grades->every('grade', '>=', 4) 
-            && $this->grades->avg('grade') < 5;
-    }
-
-    public function getGradeClassAttribute(): string
-    {
-        if ($this->isExcellentStudent()) {
-            return 'table-success';
-        }
-
-        if ($this->isGoodStudent()) {
-            return 'table-warning';
-        }
-
-        return 'table-danger'; // striped
     }
 
     public function scopeFilter($query, array $filters)

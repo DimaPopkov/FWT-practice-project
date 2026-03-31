@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+
+use App\Observers\UserObserver;
+
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
             return $canManage ? Response::allow()
                 : Response::deny('У вас нет прав для управления оценками этой группы.');
         });
+
+        User::observe(UserObserver::class);
     }
 }

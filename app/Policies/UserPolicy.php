@@ -85,4 +85,11 @@ class UserPolicy
     {
         return false;
     }
+
+    public function exportPdf(User $authUser): bool
+    {
+        $userService = app(UserService::class);
+
+        return $userService->is_admin($authUser) || $userService->is_teacher($authUser);
+    }
 }

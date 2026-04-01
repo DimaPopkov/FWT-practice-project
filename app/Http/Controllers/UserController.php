@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Services\FileService;
 
@@ -19,6 +20,7 @@ class UserController extends Controller
         $this->fileService = $fileService;
     }
 
+    use AuthorizesRequests;
 
     public function export(User $user, FileService $fileService)
     {
@@ -32,7 +34,7 @@ class UserController extends Controller
             $path = $this->fileService->uploadAvatar($request->file('avatar'), $user->id);
             
             $user->avatar = $path;
-            $user->save(); // Observer сам удалит старое, если настроен
+            $user->save();
         }
 
         return back()->with('status', 'profile-updated');
@@ -44,4 +46,22 @@ class UserController extends Controller
 
         return $this->fileService->exportUserToPdf($user);
     }
+
+    // public function restore(User $student)
+    // {
+    //     $this->authorize('restore', $student);
+
+    //     $student->restore();
+
+    //     return back()->with('success', 'Пользователь успешно восстановлен');
+    // }
+
+    // public function forceDelete(User $student)
+    // {
+    //     $this->authorize('forceDelete', $student);
+
+    //     $student->forceDelete();
+
+    //     return back()->with('success', 'Пользователь удален безвозвратно');
+    // }
 }

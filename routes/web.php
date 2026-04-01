@@ -27,7 +27,7 @@ Route::get('students/', [GroupStudentController::class, 'index'])->name('student
 Route::get('students/{student}', [GroupStudentController::class, 'show'])->name('students.show');// -> middleware('auth');
 Route::get('students/{student}/edit', [GroupStudentController::class, 'edit'])->name('students.edit');// -> middleware('auth');
 Route::put('students/{student}', [GroupStudentController::class, 'update'])->name('students.update');// -> middleware('auth');
-Route::delete('students/{student}', [GroupStudentController::class, 'destroy'])->name('students.destroy');// -> middleware('auth');
+Route::delete('students/delete/{student}', [GroupStudentController::class, 'destroy'])->name('students.destroy');// -> middleware('auth');
 
 Route::get('grades/', [GradeController::class, 'index'])->name('grades.index');// -> middleware('auth');
 Route::get('students/{student}/grades/create', [GradeController::class, 'create'])->name('grades.create');// -> middleware('auth');
@@ -36,7 +36,7 @@ Route::get('grades/{grade}/edit', [GradeController::class, 'edit'])->name('grade
 Route::put('grades/{grade}', [GradeController::class, 'update'])->name('grades.update');// -> middleware('auth');
 Route::delete('grades/{grade}', [GradeController::class, 'destroy'])->name('grades.destroy');// -> middleware('auth');
 
-Route::get('/journal', [JournalController::class, 'index'])->name('journal.index');;// -> middleware('auth');
+Route::get('/journal', [JournalController::class, 'index'])->name('journal.index');// -> middleware('auth');
 
 Route::resource('subjects', SubjectController::class);// -> middleware('auth');
 
@@ -45,6 +45,15 @@ Route::get('/users/{user}/export-pdf', [UserController::class, 'exportPdf'])
 
 Route::post('/users/{user}/avatar', [UserController::class, 'updateAvatar'])
     ->name('users.update_avatar');
+
+Route::post('users/{student}/restore', [GroupStudentController::class, 'restore'])
+    ->name('students.restore')
+    ->withTrashed();
+
+Route::delete('users/{student}/force-delete', [GroupStudentController::class, 'forceDelete'])
+    ->name('students.force_delete')
+    ->withTrashed();
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -6,6 +6,8 @@ use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use App\Services\UserService;
+
 use App\Http\Requests\StoreGroupStudentRequest;
 use App\Http\Requests\UpdateGroupStudentRequest;
 
@@ -13,15 +15,30 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class GroupStudentController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
-    public function index(Group $group, Request $request)
+    public function index(Group $group, Request $request, User $user)
     {
         $this->authorize('viewAny', $group);
-        $students = User::filter($request->only(['name', 'birthday']))->with('group')
-            ->paginate(10)
+
+        $currentUser = auth()->user();
+
+        $query = User::filter($request->only(['name', 'birthday']))->with('group');
+
+        if ($currentUser && $this->userService->is_admin($currentUser)) {
+            $query->withTrashed();
+        }
+
+        $students = $query->paginate(10)
             ->withQueryString();
 
         return view('students.index', compact('students'));
@@ -84,6 +101,20 @@ class GroupStudentController extends Controller
     {
         $this->authorize('destroy', $student);
         $student->delete();
+        return back();
+    }
+
+    public function restore(User $student)
+    {
+        $this->authorize('restore', $student);
+        $student->restore();
+        return back();
+    }
+
+    public function forceDelete(User $student)
+    {
+        $this->authorize('forceDelete', $student);
+        $student->forceDelete();
         return back();
     }
 }

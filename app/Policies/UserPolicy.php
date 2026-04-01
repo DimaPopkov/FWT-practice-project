@@ -63,27 +63,38 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    // public function delete(User $user, User $model): bool
+    // {
+    //     return $this->userService->is_admin($user) 
+    //         && $model->role !== User::ROLE_ADMIN 
+    //         && $user->group_id === $model->group_id;
+    // }
+
+    public function destroy(User $user, User $target)
     {
-        return $this->userService->is_admin($user) 
-            && $model->role !== User::ROLE_ADMIN 
-            && $user->group_id === $model->group_id;
+        if ($this->userService->is_admin($user)) {
+            return !$this->userService->is_admin($target) && $user->group_id === $target->group_id;
+        }
+        if ($this->userService->is_teacher($user)) {
+            return $this->userService->is_student($target) && $user->group_id === $target->group_id;
+        }
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user): bool
     {
-        return false;
+        return $this->userService->is_admin($user);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, User $target): bool
     {
-        return false;
+        return $this->userService->is_admin($user) && !$this->userService->is_admin($target);
     }
 
     public function exportPdf(User $authUser): bool

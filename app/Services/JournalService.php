@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\Group;
 
@@ -18,7 +17,7 @@ class JournalService
         $this->userService = $userService;
     }
 
-    public function getJournalData($groupId = null)
+    public function getJournalData()
     {
         $users = User::with('grades.subject')->paginate(10);
         $subjects = Subject::all();
@@ -47,8 +46,12 @@ class JournalService
         });
 
         return compact(
-            'users', 'subjects', 'groups', 
-            'gradesMap', 'bestStudents', 'goodStudents', 
+            'users',
+            'subjects',
+            'groups',
+            'gradesMap',
+            'bestStudents',
+            'goodStudents',
             'groupsStats'
         );
     }

@@ -13,16 +13,14 @@ class AssignInitialGrades
      * Create the event listener.
      */
     public function __construct()
-    {
-        //
-    }
+    {}
 
     /**
      * Handle the event.
      */
     public function handle(UserCreated $event): void
     {
-        if ($event->user->role == 3) {
+        if ($event->user->role === 3) {
             $subjects = Subject::all();
             foreach ($subjects as $subject) {
                 $event->user->grades()->create([

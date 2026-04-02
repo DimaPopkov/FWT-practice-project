@@ -26,16 +26,17 @@ class FileService
         return $path;
     }
 
-    public function getAvatarUrl(?string $path, int $width = 150): string
+    public function getAvatarUrl(?string $path): string
     {
-        if (!$path) return asset('images/default-avatar.png');
+        if (!$path) {
+            return asset('images/default-avatar.png');
+        }
 
         $disk = Storage::disk('avatars');
         
-        // Если файла нет на диске (теперь это public/avatars)
-        if (!$disk->exists($path)) return asset('images/default-avatar.png');
-
-        // ... логика ресайза (она остается прежней) ...
+        if (!$disk->exists($path)) {
+            return asset('images/default-avatar.png');
+        }
 
         return $disk->url($path); 
     }

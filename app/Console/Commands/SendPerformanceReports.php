@@ -38,7 +38,7 @@ class SendPerformanceReports extends Command
         foreach ($users as $user) {
             $performance = $user->grades->pluck('score', 'subject')->toArray();
 
-            if (!empty($performance)) {
+            if (count($performance) > 0) {
                 SendPerformanceEmail::dispatch($user, $performance)
                     ->onQueue('emails');
             }

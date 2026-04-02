@@ -7,7 +7,10 @@ use App\Models\User;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+
 use App\Mail\PerformanceReportMail;
+
+use App\Jobs\SendPerformanceEmail;
 
 class SendPerformanceReports extends Command
 {
@@ -33,18 +36,13 @@ class SendPerformanceReports extends Command
         $users = User::all();
 
         foreach ($users as $user) {
-            if (empty($user->email)) {
-                $this->warn("У пользователя ID {$user->id} не указан email.");
-                continue;
+            $performance = $user->grades->pluck('score', 'subject')->toArray();
+
+            if (!empty($performance)) {
+                SendPerformanceEmail::dispatch($user, $performance)
+                    ->onQueue('emails');
             }
-
-            $performance = $user->grades->pluck('grade', 'subject')->toArray();
-            
-            Mail::to($user->email)->send(
-                new PerformanceReportMail($user, $performance)
-            );
         }
-
-        $this->info('Все отчеты отправлены!');
+        $this->info('Задачи на отправку добавлены в очередь!');
     }
 }

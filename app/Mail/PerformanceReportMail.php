@@ -18,9 +18,7 @@ class PerformanceReportMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(public $user, public array $performance)
-    {
-        //
-    }
+    {}
 
     /**
      * Get the message envelope.

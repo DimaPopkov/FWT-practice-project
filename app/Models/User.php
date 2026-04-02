@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Grade;
-use App\Models\Group;
-
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,9 +17,9 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    const ROLE_ADMIN = 1;
-    const ROLE_TEACHER = 2;
-    const ROLE_STUDENT = 3;
+    public const ROLE_ADMIN = 1;
+    public const ROLE_TEACHER = 2;
+    public const ROLE_STUDENT = 3;
 
     protected $table = 'users';
     /**
@@ -67,7 +64,8 @@ class User extends Authenticatable
 
     protected function formattedBirthday(): Attribute
     {
-        return Attribute::get(fn () => 
+        return Attribute::get(
+            fn () =>
             $this->birthday ? $this->birthday->format('d-m-Y') : 'Не указана'
         );
     }

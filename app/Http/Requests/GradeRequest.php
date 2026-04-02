@@ -24,11 +24,9 @@ class GradeRequest extends FormRequest
     {
         return [
             'subject' => 'required',
-                Rule::unique('grades')->where(
-                    function ($query) use ($student) {
-                        return $query->where('user_id', $student->id);
-                    }
-                ),
+                Rule::unique('grades')->where(function ($query) use ($student) {
+                    return $query->where('user_id', $student->id);
+                }),
             'grade' => 'required|integer|min:1|max:5',
         ];
     }

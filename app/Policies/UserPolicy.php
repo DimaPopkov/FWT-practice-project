@@ -9,7 +9,7 @@ use App\Services\UserService;
 
 class UserPolicy
 {
-    protected $userService;
+    protected UserService $userService;
 
     public function __construct(UserService $userService) 
     {
@@ -18,7 +18,7 @@ class UserPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return true;
     }
@@ -26,7 +26,7 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(): bool
     {
         return true;
     }
@@ -44,7 +44,9 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        if ($this->userService->is_student($user)) return $user->id === $model->id;
+        if ($this->userService->is_student($user)) {
+            return $user->id === $model->id;
+        }
 
         if ($this->userService->is_admin($user)) {
             return $user->id !== $model->id 
@@ -70,7 +72,7 @@ class UserPolicy
     //         && $user->group_id === $model->group_id;
     // }
 
-    public function destroy(User $user, User $target)
+    public function destroy(User $user, User $target): bool
     {
         if ($this->userService->is_admin($user)) {
             return !$this->userService->is_admin($target) && $user->group_id === $target->group_id;
@@ -99,8 +101,6 @@ class UserPolicy
 
     public function exportPdf(User $authUser): bool
     {
-        $userService = app(UserService::class);
-
-        return $userService->is_admin($authUser) || $userService->is_teacher($authUser);
+        return $this->userService->is_admin($authUser) || $this->userService->is_teacher($authUser);
     }
 }

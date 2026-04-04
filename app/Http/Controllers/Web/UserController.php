@@ -53,16 +53,12 @@ class UserController extends Controller
     {
         $this->authorize('view', $user);
 
-        // 1. Генерируем имя файла
         $fileName = 'cv_' . $user->id . '_' . time() . '.pdf';
         $path = 'public/cv/' . $fileName;
 
-        // 2. Вызываем вашу логику генерации PDF (как в задании 19)
-        // Но вместо return $pdf->download() сохраняем файл:
         $pdf = \PDF::loadView('pdf.cv', compact('user'));
         Storage::put($path, $pdf->output());
 
-        // 3. Возвращаем ссылку на скачивание
         return response()->json([
             'message' => 'CV успешно сгенерировано',
             'download_url' => asset(Storage::url($path))

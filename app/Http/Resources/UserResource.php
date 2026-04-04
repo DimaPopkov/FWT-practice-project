@@ -20,7 +20,6 @@ class UserResource extends JsonResource
             'group_id' => $this->group_id,
             'email' => $this->email,
             'role' => $this->role,
-            'created_at' => $this->created_at->format('d-m-Y'),
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
+
 
 use App\Models\Grade;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Models\Subject;
 use App\Services\JournalService;
 use App\Services\UserService;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\GradeRequest;
 
 use Illuminate\Http\Request;

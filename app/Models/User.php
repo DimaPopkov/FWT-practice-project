@@ -11,11 +11,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Laravel\Passport\HasApiTokens;
+
 class User extends Authenticatable
 {
     use SoftDeletes;
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     public const ROLE_ADMIN = 1;
     public const ROLE_TEACHER = 2;

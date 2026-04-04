@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Информация о студенте</title>
     <style>
-        body { font-family: 'DejaVu Sans', sans-serif; } {{-- Для поддержки кириллицы --}}
+        body { font-family: 'DejaVu Sans', sans-serif; }
         h1 { text-align: center; }
     </style>
 </head>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use App\Models\Group;
 use App\Models\User;
@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 use App\Services\UserService;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
 
@@ -39,7 +40,7 @@ class GroupController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(User $user)
     {
         $this->authorize('create', $user);
         $group = new Group();
@@ -49,7 +50,7 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreGroupRequest $request)
+    public function store(StoreGroupRequest $request, User $user)
     {
         $this->authorize('store', $user);
         Group::create($request->validated());

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\GradeController;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\GroupStudentController;
-use App\Http\Controllers\JournalController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Web\GradeController;
+use App\Http\Controllers\Web\GroupController;
+use App\Http\Controllers\Web\GroupStudentController;
+use App\Http\Controllers\Web\JournalController;
+use App\Http\Controllers\Web\SubjectController;
+use App\Http\Controllers\Web\LoginController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\UserController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -33,7 +33,7 @@ Route::delete('students/delete/{student}', [GroupStudentController::class, 'dest
 
 Route::get('grades/', [GradeController::class, 'index'])->name('grades.index');// -> middleware('auth');
 Route::get('students/{student}/grades/create', [GradeController::class, 'create'])->name('grades.create');// -> middleware('auth');
-Route::post('students/{student}/grades', [GradeController::class, 'store'])->name('grades.store');// -> middleware('auth');
+Route::get('students/{student}/grades', [GradeController::class, 'store'])->name('grades.store');// -> middleware('auth');
 Route::get('grades/{grade}/edit', [GradeController::class, 'edit'])->name('grades.edit');// -> middleware('auth');
 Route::put('grades/{grade}', [GradeController::class, 'update'])->name('grades.update');// -> middleware('auth');
 Route::delete('grades/{grade}', [GradeController::class, 'destroy'])->name('grades.destroy');// -> middleware('auth');

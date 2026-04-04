@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use App\Models\User;
 use App\Models\Subject;
 use App\Models\Grade;
 use App\Models\Group;
 
+use App\Http\Controllers\Controller;
 use App\Services\JournalService;
 
 use Illuminate\Http\Request;

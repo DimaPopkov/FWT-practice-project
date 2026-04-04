@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use Illuminate\Support\Facades\Gate;
 
 use App\Models\User;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -47,21 +49,23 @@ class UserController extends Controller
         return $this->fileService->exportUserToPdf($user);
     }
 
-    // public function restore(User $student)
-    // {
-    //     $this->authorize('restore', $student);
+    public function exportCv(User $user)
+    {
+        $this->authorize('view', $user);
 
-    //     $student->restore();
+        // 1. Генерируем имя файла
+        $fileName = 'cv_' . $user->id . '_' . time() . '.pdf';
+        $path = 'public/cv/' . $fileName;
 
-    //     return back()->with('success', 'Пользователь успешно восстановлен');
-    // }
+        // 2. Вызываем вашу логику генерации PDF (как в задании 19)
+        // Но вместо return $pdf->download() сохраняем файл:
+        $pdf = \PDF::loadView('pdf.cv', compact('user'));
+        Storage::put($path, $pdf->output());
 
-    // public function forceDelete(User $student)
-    // {
-    //     $this->authorize('forceDelete', $student);
-
-    //     $student->forceDelete();
-
-    //     return back()->with('success', 'Пользователь удален безвозвратно');
-    // }
+        // 3. Возвращаем ссылку на скачивание
+        return response()->json([
+            'message' => 'CV успешно сгенерировано',
+            'download_url' => asset(Storage::url($path))
+        ]);
+    }
 }

@@ -19,7 +19,7 @@ class JournalService
 
     public function getJournalData()
     {
-        $users = User::with('grades.subject')->paginate(10);
+        $users = User::where('role', 3)->with('grades.subject')->paginate(10);
         $subjects = Subject::all();
         $groups = Group::all();
 

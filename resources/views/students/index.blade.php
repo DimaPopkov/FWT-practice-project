@@ -38,71 +38,72 @@
                             </thead>
                             <tbody>
                                 @foreach($students as $student)
-                                    <tr>
-                                        <td>
-                                            {{ $student->name }}
-                                        </td>
-                                        <td>
-                                            {{ $student->formatted_birthday }}
-                                        </td>
-                                        @if($student->group)
+                                    @if($student->role === 3)
+                                        <tr>
                                             <td>
-                                                {{ $student->group->name }}
+                                                {{ $student->name }}
                                             </td>
-                                        @else
                                             <td>
-                                                Нет данных
+                                                {{ $student->formatted_birthday }}
                                             </td>
-                                        @endif
-                                        
-                                        <td>
-                                            @can('view', $student)
-                                                <a href="{{ route('students.show', $student) }}" class="btn btn-primary">
-                                                    Подробнее
-                                                </a>
-                                            @endcan
-
-                                            @can('update', $student)
-                                                <a href="{{ route('students.edit', $student) }}" class="btn btn-warning">
-                                                    Изменить
-                                                </a>
-                                            @endcan
-
-                                            @if(!$student->trashed())
-                                                @can('destroy', $student)
-                                                    <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    
-                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы точно хотите удалить?')">
-                                                        Удалить
-                                                    </button>
-                                                </form>
-                                                @endcan
+                                            @if($student->group)
+                                                <td>
+                                                    {{ $student->group->name }}
+                                                </td>
+                                            @else
+                                                <td>
+                                                    Нет данных
+                                                </td>
                                             @endif
+                                            
+                                            <td>
+                                                @if(!$student->trashed())
+                                                    @can('view', $student)
+                                                        <a href="{{ route('students.show', $student) }}" class="btn btn-primary">
+                                                            Подробнее
+                                                        </a>
+                                                    @endcan
 
-                                            @can('exportPdf', $student)
-                                                <a href="{{ route('users.export_pdf', $student) }}" class="btn btn-allarm">
-                                                    Экспорт PDF
-                                                </a>
-                                            @endcan
-
-                                            @if($student->trashed())
-                                                @can('restore', $student)
-                                                    <form action="{{ route('students.restore', $student) }}" method="POST" class="btn btn-danger">
+                                                    @can('update', $student)
+                                                        <a href="{{ route('students.edit', $student) }}" class="btn btn-warning">
+                                                            Изменить
+                                                        </a>
+                                                    @endcan
+                                                    @can('destroy', $student)
+                                                        <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline;">
                                                         @csrf
-                                                        <button>Восстановить</button>
+                                                        @method('DELETE')
+                                                        
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Вы точно хотите удалить?')">
+                                                            Удалить
+                                                        </button>
                                                     </form>
+                                                    @endcan
+                                                @endif
+
+                                                @if($student->trashed())
+                                                    @can('restore', $student)
+                                                        <form action="{{ route('students.restore', $student) }}" method="POST" class="btn btn-success">
+                                                            @csrf
+                                                            <button>Восстановить</button>
+                                                        </form>
+                                                    @endcan
+                                                    @can('forceDelete', $student)
+                                                        <form action="{{ route('students.force_delete', $student) }}" method="POST" class="btn btn-danger">
+                                                            @csrf @method('DELETE')
+                                                            <button>Удалить навсегда</button>
+                                                        </form>
+                                                    @endcan
+                                                @endif
+
+                                                @can('exportPdf', $student)
+                                                    <a href="{{ route('users.export_pdf', $student) }}" class="btn btn-allarm">
+                                                        Экспорт PDF
+                                                    </a>
                                                 @endcan
-                                                @can('forceDelete', $student)
-                                                    <form action="{{ route('students.force_delete', $student) }}" method="POST" class="btn btn-danger">
-                                                        @csrf @method('DELETE')
-                                                        <button>Удалить навсегда</button>
-                                                    </form>
-                                                @endcan
-                                            @endif
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>

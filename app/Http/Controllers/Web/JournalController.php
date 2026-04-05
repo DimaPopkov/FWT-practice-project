@@ -11,6 +11,9 @@ use App\Http\Controllers\Controller;
 use App\Services\JournalService;
 
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Gate;
+
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class JournalController extends Controller

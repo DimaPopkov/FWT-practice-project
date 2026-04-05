@@ -9,7 +9,10 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
+
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Requests\UpdateSubjectRequest;
 
 class SubjectController extends Controller
 {
@@ -52,7 +55,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        $this->authorize('show', $subject);
+        $this->authorize('view', $subject);
         return view('subjects.show', compact('subject'));
     }
 
@@ -61,7 +64,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        $this->authorize('edit', $subject);
+        $this->authorize('update', $subject);
         return view('subjects.edit', compact('subject'));
     }
 

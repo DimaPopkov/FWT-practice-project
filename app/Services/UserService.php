@@ -9,6 +9,7 @@ use App\Models\Group;
 
 class UserService
 {
+    
     public static function getRoles(): array
     {
         return [

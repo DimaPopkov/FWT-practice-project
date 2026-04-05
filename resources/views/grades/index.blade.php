@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="container">
                 <div>
-                    <a class="btn btn-success btn_align mb-3"> Добавить </a>
+                    <a class="btn btn-success btn_align mb-3" href="{{ route('grades.create') }}"> Добавить </a>
                     
                     @if($grades->isNotEmpty())
                         <div class="table-responsive">
@@ -34,17 +34,18 @@
                                             <td>{{ $grade->grade ?? "Не указана" }}</td>
 
                                             <td>
-                                                <a href="" class="btn btn-primary">
-                                                    Подробнее
-                                                </a>
-                                        
-                                                <a href="" class="btn btn-warning">
+                                                <a href="{{ route('grades.edit', $grade) }}" class="btn btn-warning">
                                                     Изменить
                                                 </a>
-                                                
-                                                <a href="" class="btn btn-danger">
-                                                    Удалить
-                                                </a>
+
+                                                <form action="{{ route('grades.destroy', $grade->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы точно хотите удалить?')">
+                                                        Удалить
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

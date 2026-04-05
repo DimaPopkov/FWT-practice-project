@@ -42,19 +42,19 @@
 
                                             <div style="flex: 1;" class="text-end">
                                                 @can('view', $subject)
-                                                    <a href="" class="btn btn-primary">
+                                                    <a href="{{ route('subjects.show', $subject) }}" class="btn btn-primary">
                                                         Подробнее
                                                     </a>
                                                 @endcan
 
                                                 @can('update', $subject)
-                                                    <a href="" class="btn btn-warning">
+                                                    <a href="{{ route('subjects.edit', $subject) }}" class="btn btn-warning">
                                                         Изменить
                                                     </a>
                                                 @endcan
 
                                                 @can('delete', $subject)
-                                                    <a href="" class="btn btn-danger">
+                                                    <a href="{{ route('subjects.destroy', $subject) }}" class="btn btn-danger">
                                                         Удалить
                                                     </a>
                                                 @endcan

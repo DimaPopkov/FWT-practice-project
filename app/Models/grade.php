@@ -13,7 +13,7 @@ class Grade extends Model
     use HasFactory;
     
     protected $fillable = [
-        'user',
+        'user_id',
         'subject_id',
         'grade',
     ];

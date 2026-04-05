@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGroupStudentRequest;
 use App\Http\Requests\UpdateGroupStudentRequest;
 
+use Illuminate\Support\Facades\Gate;
+
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class GroupStudentController extends Controller
@@ -59,7 +61,7 @@ class GroupStudentController extends Controller
      */
     public function store(StoreGroupStudentRequest $request, Group $group)
     {
-        $this->authorize('store', $group);
+        $this->authorize('create', $group);
         $data = $request->validated();
 
         $group->users()->create($data); 
@@ -72,7 +74,7 @@ class GroupStudentController extends Controller
      */
     public function show(User $student)
     {
-        $this->authorize('show', $student);
+        $this->authorize('view', $student);
         return view('students.show', compact('student'));
     }
 
@@ -81,8 +83,11 @@ class GroupStudentController extends Controller
      */
     public function edit(User $student)
     {
-        $this->authorize('edit', $student);
-        return view('students.edit', compact('student'));
+        $this->authorize('update', $student);
+
+        $groups = Group::all();
+
+        return view('students.edit', compact('student', 'groups'));
     }
 
     /**
@@ -91,7 +96,9 @@ class GroupStudentController extends Controller
     public function update(UpdateGroupStudentRequest $request, User $student)
     {
         $this->authorize('update', $student);
+
         $student->update($request->validated());
+
         return redirect()->route('students.show', $student);
     }
 

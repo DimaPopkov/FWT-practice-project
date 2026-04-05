@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
+<<<<<<< HEAD
 use App\Http\Controllers\Web\GradeController;
 use App\Http\Controllers\Web\GroupController;
 use App\Http\Controllers\Web\GroupStudentController;
@@ -59,3 +60,8 @@ Route::middleware('auth')->group(function () {
 Route::redirect('/', '/register');
 
 require __DIR__.'/auth.php';
+=======
+Route::get('/', function () {
+    return view('welcome');
+});
+>>>>>>> main

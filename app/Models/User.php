@@ -30,11 +30,16 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+<<<<<<< HEAD
         'name',
         'avatar',
         'group_id',
         'email',
         'role',
+=======
+        'fio',
+        'group',
+>>>>>>> main
         'birthday',
         'password',
     ];
@@ -63,6 +68,7 @@ class User extends Authenticatable
             'address' => 'array',
         ];
     }
+<<<<<<< HEAD
 
     protected function formattedBirthday(): Attribute
     {
@@ -112,4 +118,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Grade::class);
     }
+=======
+>>>>>>> main
 }

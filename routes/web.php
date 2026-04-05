@@ -13,49 +13,38 @@ use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\UserController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
-Route::redirect('/', '/register');
+Route::get('/journal', [JournalController::class, 'index'])->name('journal.index');
+Route::resource('groups', GroupController::class);
+Route::resource('subjects', SubjectController::class);
 
-Route::resource('groups', GroupController::class);// -> middleware('auth');
+Route::post('groups/{group}/add-user', [GroupController::class, 'addUser'])->name('groups.add-user');
+Route::delete('groups/{group}/remove-user/{user}', [GroupController::class, 'removeUser'])->name('groups.remove-user');
+Route::get('groups/{group}/students', [GroupStudentController::class, 'index'])->name('groups.students.index');
+Route::get('groups/{group}/students/create', [GroupStudentController::class, 'create'])->name('groups.students.create');
+Route::post('groups/{group}/students', [GroupStudentController::class, 'store'])->name('groups.students.store');
 
-Route::get('groups/{group}/students', [GroupStudentController::class, 'index'])->name('groups.students.index');// -> middleware('auth');
-Route::get('groups/{group}/students/create', [GroupStudentController::class, 'create'])->name('groups.students.create');// -> middleware('auth');
-Route::post('groups/{group}/students', [GroupStudentController::class, 'store'])->name('groups.students.store');// -> middleware('auth');
+Route::get('students/', [GroupStudentController::class, 'index'])->name('students.index');
+Route::get('students/{student}', [GroupStudentController::class, 'show'])->name('students.show');
+Route::get('students/{student}/edit', [GroupStudentController::class, 'edit'])->name('students.edit');
+Route::put('students/{student}', [GroupStudentController::class, 'update'])->name('students.update');
+Route::delete('students/delete/{student}', [GroupStudentController::class, 'destroy'])->name('students.destroy');
 
-Route::get('students/', [GroupStudentController::class, 'index'])->name('students.index');// -> middleware('auth');
-Route::get('students/{student}', [GroupStudentController::class, 'show'])->name('students.show');// -> middleware('auth');
-Route::get('students/{student}/edit', [GroupStudentController::class, 'edit'])->name('students.edit');// -> middleware('auth');
-Route::put('students/{student}', [GroupStudentController::class, 'update'])->name('students.update');// -> middleware('auth');
-Route::delete('students/delete/{student}', [GroupStudentController::class, 'destroy'])->name('students.destroy');// -> middleware('auth');
+Route::get('grades/', [GradeController::class, 'index'])->name('grades.index');
+Route::get('students/grades/create', [GradeController::class, 'create'])->name('grades.create');
+Route::post('students/grades/store', [GradeController::class, 'store'])->name('grades.store');
+Route::get('grades/{grade}/edit', [GradeController::class, 'edit'])->name('grades.edit');
+Route::put('grades/{grade}', [GradeController::class, 'update'])->name('grades.update');
+Route::delete('grades/{grade}', [GradeController::class, 'destroy'])->name('grades.destroy');
 
-Route::get('grades/', [GradeController::class, 'index'])->name('grades.index');// -> middleware('auth');
-Route::get('students/{student}/grades/create', [GradeController::class, 'create'])->name('grades.create');// -> middleware('auth');
-Route::get('students/{student}/grades', [GradeController::class, 'store'])->name('grades.store');// -> middleware('auth');
-Route::get('grades/{grade}/edit', [GradeController::class, 'edit'])->name('grades.edit');// -> middleware('auth');
-Route::put('grades/{grade}', [GradeController::class, 'update'])->name('grades.update');// -> middleware('auth');
-Route::delete('grades/{grade}', [GradeController::class, 'destroy'])->name('grades.destroy');// -> middleware('auth');
+Route::get('/users/{user}/export-pdf', [UserController::class, 'exportPdf'])->name('users.export_pdf');
+Route::post('/users/{user}/avatar', [UserController::class, 'updateAvatar'])->name('users.update_avatar');
 
-Route::get('/journal', [JournalController::class, 'index'])->name('journal.index');// -> middleware('auth');
-
-Route::resource('subjects', SubjectController::class);// -> middleware('auth');
-
-Route::get('/users/{user}/export-pdf', [UserController::class, 'exportPdf'])
-    ->name('users.export_pdf');
-
-Route::post('/users/{user}/avatar', [UserController::class, 'updateAvatar'])
-    ->name('users.update_avatar');
-
-Route::post('users/{student}/restore', [GroupStudentController::class, 'restore'])
-    ->name('students.restore')
+Route::post('users/{student}/restore', [GroupStudentController::class, 'restore'])->name('students.restore')
     ->withTrashed();
 
-Route::delete('users/{student}/force-delete', [GroupStudentController::class, 'forceDelete'])
-    ->name('students.force_delete')
+Route::delete('users/{student}/force-delete', [GroupStudentController::class, 'forceDelete'])->name('students.force_delete')
     ->withTrashed();
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -66,5 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::redirect('/', '/register');
 
 require __DIR__.'/auth.php';

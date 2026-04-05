@@ -20,7 +20,7 @@
                             @if(request('name'))
                                 <a href="{{ route('groups.index') }}" class="btn btn-outline-secondary">Сбросить</a>
                             @endif    
-                            @can('create', App\Models\User::class) <a class="btn btn-success"> Добавить </a> @endcan
+                            @can('create', App\Models\User::class) <a class="btn btn-success" href="{{ route('groups.create') }}"> Добавить </a> @endcan
                         </div>
                     </form>
 
@@ -43,17 +43,17 @@
 
                                             <div style="flex: 1;" class="text-end">
                                                 @can('view', $group)
-                                                    <a href="" class="btn btn-primary">
+                                                    <a href="{{ route('groups.show', $group) }}" class="btn btn-primary">
                                                         Подробнее
                                                     </a>
                                                 @endcan
                                                 @can('update', $group)
-                                                    <a href="" class="btn btn-warning">
+                                                    <a href="{{ route('groups.edit', $group) }}" class="btn btn-warning">
                                                         Изменить
                                                     </a>
                                                 @endcan
                                                 @can('delete', $group)
-                                                    <a href="" class="btn btn-danger">
+                                                    <a href="{{ route('groups.destroy', $group) }}" class="btn btn-danger">
                                                         Удалить
                                                     </a>
                                                 @endcan

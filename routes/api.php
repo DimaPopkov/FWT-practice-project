@@ -14,13 +14,13 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/reset-password', [AuthController::class, 'logout']);
     
-    Route::apiResource('/groups', GroupController::class);
-    Route::apiResource('/subjects', SubjectController::class);
+    Route::apiResource('/groups', GroupController::class)->names('api.groups');
+    Route::apiResource('/subjects', SubjectController::class)->names('api.subjects');
 
-    Route::get('/users', [UserController::class, 'index']); // Список всех пользователей
+    Route::get('/users', [UserController::class, 'index'])->name('api.users'); // Список всех пользователей
     Route::get('/groups/{group}/users', [UserController::class, 'groupUsers']); // Юзеры группы
-    Route::get('/users/{user}/cv', [UserController::class, 'exportCv']); // Ссылка на CV
+    Route::get('/users/{user}/cv', [UserController::class, 'exportCv']);        // Ссылка на CV
 
-    Route::get('/users/{user}/grades', [GradeController::class, 'index']); // Получить оценки
-    Route::post('/users/{user}/grades', [GradeController::class, 'store']); // Поставить оценку
+    Route::get('/users/{user}/grades', [GradeController::class, 'index']);      // Получить оценки
+    Route::post('/users/{user}/grades', [GradeController::class, 'store']);     // Поставить оценку
 });

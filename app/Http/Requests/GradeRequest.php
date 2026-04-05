@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+use Illuminate\Validation\Rule;
+
 class GradeRequest extends FormRequest
 {
     /**
@@ -22,8 +24,15 @@ class GradeRequest extends FormRequest
      */
     public function rules(): array
     {
+        $student = $this->route('student');
+
+        if (!$student && $this->route('grade')) {
+            $student = $this->route('grade')->user;
+        }
+
         return [
-            'subject' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'subject_id' => 'required',
                 Rule::unique('grades')->where(function ($query) use ($student) {
                     return $query->where('user_id', $student->id);
                 }),

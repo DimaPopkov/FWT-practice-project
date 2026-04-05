@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateGroupStudentRequest extends FormRequest
 {
@@ -23,7 +24,8 @@ class UpdateGroupStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:user',
+            'name' => 'required|string|max:255', Rule::unique('users', 'name')->ignore($this->route('student')),
+            'group_id' => 'nullable|exists:groups,id', 
         ];
     }
 }
